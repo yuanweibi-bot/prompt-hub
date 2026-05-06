@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提示词工坊 | PromptHub</title>
+<meta name="description" content="高质量的 ChatGPT/Claude/DeepSeek 提示词集合。用户投稿，实时更新。">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --bg: #f8fafc; --card: #fff; --primary: #6366f1; --primary-light: #eef2ff; --text: #1e293b; --text2: #64748b; --border: #e2e8f0; --gold: #f59e0b; }
+body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.header { background: linear-gradient(135deg, #6366f1, #06b6d4); color: white; padding: 3rem 1rem 4rem; text-align: center; }
+.header h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+.header p { opacity: 0.9; font-size: 1.05rem; }
+.header .stats { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; }
+.header .stats span { text-align: center; }
+.header .stats .num { font-size: 1.5rem; font-weight: 700; }
+.header .stats .lbl { font-size: 0.8rem; opacity: 0.8; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: -1.5rem auto 1.5rem; max-width: 1100px; padding: 0 1rem; position: relative; z-index: 10; }
+.filters button { background: white; border: 1px solid var(--border); padding: 0.5rem 1.2rem; border-radius: 30px; font-size: 0.85rem; cursor: pointer; color: var(--text2); transition: all 0.2s; font-family: inherit; }
+.filters button:hover { border-color: var(--primary); color: var(--primary); }
+.filters button.active { background: var(--primary); color: white; border-color: var(--primary); }
+.search-bar { display: flex; max-width: 1100px; margin: 0 auto 1.5rem; padding: 0 1rem; gap: 0.5rem; }
+.search-bar input { flex: 1; padding: 0.7rem 1rem; border: 1px solid var(--border); border-radius: 12px; font-size: 0.9rem; outline: none; font-family: inherit; }
+.search-bar input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; transition: all 0.2s; }
+.card:hover { box-shadow: 0 8px 25px -8px rgba(0,0,0,0.1); transform: translateY(-2px); }
+.card .tag { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
+.card .cat { font-size: 0.8rem; color: var(--text2); }
+.card h3 { font-size: 1.05rem; margin: 0.3rem 0; }
+.card .desc { color: var(--text2); font-size: 0.85rem; margin-bottom: 0.8rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card .preview { background: #f1f5f9; border-radius: 8px; padding: 0.8rem; font-size: 0.8rem; color: #475569; font-family: 'Consolas', monospace; white-space: pre-wrap; max-height: 100px; overflow: hidden; position: relative; }
+.card .preview::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: linear-gradient(transparent, #f1f5f9); }
+.card .votes { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.8rem; font-size: 0.85rem; color: var(--text2); }
+.card .votes .up { cursor: pointer; font-size: 1.1rem; transition: color 0.2s; }
+.card .votes .up:hover { color: var(--primary); }
+.submit-area { background: var(--card); border: 2px dashed var(--primary); border-radius: 16px; padding: 2rem; text-align: center; margin-bottom: 2rem; }
+.submit-area h3 { color: var(--primary); margin-bottom: 0.5rem; }
+.submit-area p { color: var(--text2); font-size: 0.9rem; margin-bottom: 1rem; }
+.submit-area .btn { background: var(--primary); color: white; border: none; padding: 0.7rem 2rem; border-radius: 12px; font-size: 0.95rem; cursor: pointer; font-family: inherit; font-weight: 600; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; justify-content: center; align-items: center; padding: 1rem; }
+.modal-overlay.active { display: flex; }
+.modal { background: white; border-radius: 20px; padding: 2rem; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal h2 { margin-bottom: 1rem; }
+.modal label { display: block; font-size: 0.85rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.3rem; }
+.modal input, .modal select, .modal textarea { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 10px; font-size: 0.9rem; font-family: inherit; }
+.modal textarea { min-height: 120px; resize: vertical; }
+.modal .btn-row { display: flex; gap: 0.5rem; margin-top: 1.5rem; justify-content: flex-end; }
+.modal .btn-row button { padding: 0.6rem 1.5rem; border-radius: 10px; border: none; cursor: pointer; font-family: inherit; font-weight: 600; }
+.modal .btn-row .cancel { background: #f1f5f9; color: var(--text2); }
+.modal .btn-row .submit { background: var(--primary); color: white; }
+footer { text-align: center; padding: 2rem; color: #94a3b8; font-size: 0.85rem; }
+footer a { color: var(--primary); text-decoration: none; }
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.6rem; }
+  .grid { grid-template-columns: 1fr; }
+  .header .stats { gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔮 提示词工坊</h1>
+  <p>高质量 ChatGPT / Claude / DeepSeek 提示词集合 · 每日更新</p>
+  <div class="stats">
+    <span><div class="num" id="totalPrompts">50+</div><div class="lbl">提示词</div></span>
+    <span><div class="num" id="totalCats">6</div><div class="lbl">分类</div></span>
+    <span><div class="num" id="totalVotes">实时</div><div class="lbl">社区投票</div></span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="filters" id="filters">
+    <button class="active" data-cat="all">🏠 全部</button>
+    <button data-cat="writing">✍️ 写作</button>
+    <button data-cat="business">💼 商业</button>
+    <button data-cat="study">📚 学习</button>
+    <button data-cat="code">💻 编程</button>
+    <button data-cat="creative">🎨 创意</button>
+    <button data-cat="advanced">🚀 高阶</button>
+  </div>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="搜索提示词..." oninput="render()">
+</div>
+
+<div class="container">
+  <div class="submit-area">
+    <h3>📮 投稿你的提示词</h3>
+    <p>有好用的提示词？分享给社区，帮助更多人。</p>
+    <button class="btn" onclick="openModal()">✏️ 我要投稿</button>
+  </div>
+
+  <div class="grid" id="promptGrid"></div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>📝 投稿提示词</h2>
+    <label>分类</label>
+    <select id="mCat"><option>写作</option><option>商业</option><option>学习</option><option>编程</option><option>创意</option><option>高阶</option></select>
+    <label>标题</label>
+    <input id="mTitle" placeholder="例如：小红书爆款文案生成器">
+    <label>简短描述</label>
+    <input id="mDesc" placeholder="一句话说明这个提示词的用途">
+    <label>提示词内容</label>
+    <textarea id="mPrompt" placeholder="粘贴完整的提示词模板..."></textarea>
+    <label>你的昵称（可选）</label>
+    <input id="mAuthor" placeholder="匿名">
+    <div class="btn-row">
+      <button class="cancel" onclick="closeModal()">取消</button>
+      <button class="submit" onclick="submitPrompt()">📨 提交</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>提示词工坊 PromptHub · 开源 · 社区驱动</p>
+  <p style="margin-top:0.3rem;">投稿即代表同意将内容以 MIT 协议开源</p>
+</footer>
+
+<script>
+// ====== 初始提示词库 ======
+let prompts = [
+  { id: 1, cat: 'writing', title: '小红书爆款文案', desc: '生成种草笔记，含标题+正文+话题标签', prompt: '请以小红书博主的口吻，写一篇关于 [产品] 的种草笔记。要求：标题抓眼球，正文300-500字，包含emoji，结尾带话题标签。', author: 'PromptHub', votes: 24 },
+  { id: 2, cat: 'writing', title: '朋友圈营销文案', desc: '100-150字短文案，前3行抓注意力+CTA', prompt: '请帮我写一条朋友圈推广文案。产品：[待填写]。要求：100-150字，前3行抓住注意力，结尾要有行动号召。', author: 'PromptHub', votes: 18 },
+  { id: 3, cat: 'writing', title: '简历优化专家', desc: '让简历更专业、成果量化、一页浓缩', prompt: '请帮我优化以下简历/自我介绍。目标岗位：[待填写]。要求：保持关键信息，使用行业关键词，用数据和成果说话，一页以内。', author: 'PromptHub', votes: 31 },
+  { id: 4, cat: 'writing', title: '英文邮件写作', desc: '正式/半正式/友好三种风格可选', prompt: 'Write a professional email. Purpose:[待填]. Tone: [formal/semi-formal]. Key points: 1. 2. 3. Include subject line and proper closing.', author: 'PromptHub', votes: 15 },
+  { id: 5, cat: 'business', title: '产品卖点提炼', desc: '从功能列表提炼核心USP和一句话价值主张', prompt: '请为以下产品提炼核心卖点。产品：[待填]。功能：1. 2. 3. 输出：3个核心卖点 + 1个价值主张（50字）+ 针对三类客户的卖点表达。', author: 'PromptHub', votes: 22 },
+  { id: 6, cat: 'business', title: '竞品对比分析', desc: '多维度表格对比，含差异化建议', prompt: '请对以下竞品进行对比分析。我的产品：[待填]。竞品A：[待填]。分析维度：价格、功能、目标用户、优劣势。用表格输出。', author: 'PromptHub', votes: 14 },
+  { id: 7, cat: 'business', title: '客户问答脚本', desc: '专业回答常见客户问题，引导下一步', prompt: '我是[业务]的销售。客户可能问：Q1. Q2. Q3. 要求回答不超过100字，突出价值，结尾引导下一步。', author: 'PromptHub', votes: 11 },
+  { id: 8, cat: 'study', title: '读书笔记生成器', desc: '结构化输出核心观点+实操建议+行动项', prompt: '请为以下书籍生成结构化笔记。书名：[待填]。输出：核心观点（3句）| 关键概念 | 实操建议清单 | 我的行动项。', author: 'PromptHub', votes: 27 },
+  { id: 9, cat: 'study', title: '会议纪要整理', desc: '录音/笔记转专业会议纪要含行动项', prompt: '请将以下会议内容整理为专业纪要。输出：会议主题、时间、参会人、核心结论、行动项（责任人+截止日期）、待跟进事项。', author: 'PromptHub', votes: 19 },
+  { id: 10, cat: 'study', title: '学习计划制定', desc: '分阶段路线图+每周安排+推荐资源', prompt: '请制定 [时间段] 学习计划。目标：[待填]。每天[X]小时。输出：阶段路线图、每周安排、推荐资源、里程碑和自测方法。', author: 'PromptHub', votes: 16 },
+  { id: 11, cat: 'code', title: '代码解释器', desc: '逐行解释代码功能、算法、潜在问题', prompt: '请逐行解释以下代码。语言：[语言]。代码：[粘贴]。要求：解释每行作用，指出关键设计模式，标注潜在问题。', author: 'PromptHub', votes: 33 },
+  { id: 12, cat: 'code', title: 'Debug 助手', desc: '分析错误信息，给出解决方案', prompt: '代码出现以下错误。语言：[语言]。错误信息：[粘贴]。代码：[粘贴]。我已尝试：[方法]。请分析原因并给出解决方案。', author: 'PromptHub', votes: 29 },
+  { id: 13, cat: 'code', title: 'API 文档生成', desc: '自动生成 JSDoc/文档字符串格式', prompt: '请为以下函数生成API文档。函数名：[待填]。参数：[列表]。输出JSDoc格式：函数描述、参数说明、返回值、使用示例、异常。', author: 'PromptHub', votes: 12 },
+  { id: 14, cat: 'creative', title: '短视频脚本', desc: '抖音/小红书/B站脚本文案含节奏设计', prompt: '请写一个[时长]短视频脚本。主题：[待填]。平台：抖音。风格：幽默/知识。输出：开头3秒、正文节奏、结尾引导、字幕提示。', author: 'PromptHub', votes: 21 },
+  { id: 15, cat: 'creative', title: '商业命名生成器', desc: '中文名5个+英文名5个附含义解释', prompt: '请为以下项目取10个名字。行业：[待填]。品牌调性：[高端/亲民]。输出：中文名5个+英文名5个，每个附带含义解释。', author: 'PromptHub', votes: 13 },
+  { id: 16, cat: 'advanced', title: '角色扮演设定', desc: '设定AI角色、背景、沟通风格', prompt: '从现在起，你是一名[角色]。专业领域：[待填]。经验：X年。风格：[直接/耐心/幽默]。请以这个角色回答我的第一个问题。', author: 'PromptHub', votes: 25 },
+  { id: 17, cat: 'advanced', title: '思维链推理', desc: '复杂问题逐步分析+推演+结论', prompt: '请一步步思考并回答。问题：[复杂问题]。步骤：1.分析核心 2.列出需要信息 3.逐步推理 4.给出结论 5.指出不确定性。', author: 'PromptHub', votes: 20 },
+  { id: 18, cat: 'advanced', title: '多轮对话优化', desc: '基于对话历史保持连贯回答', prompt: '以下是对话历史。请基于上下文继续。要求：保持连贯性，引用之前信息，不重复说过的话。', author: 'PromptHub', votes: 17 },
+];
+
+// ====== 从 localStorage 加载投稿 ======
+try {
+  const saved = JSON.parse(localStorage.getItem('prompts_data'));
+  if (saved && Array.isArray(saved) && saved.length > 0) {
+    // Merge saved prompts with initial (deduplicate by checking if initial has been augmented)
+    const existingIds = new Set(prompts.map(p => p.id));
+    const newPrompts = saved.filter(p => !existingIds.has(p.id));
+    prompts = [...prompts, ...newPrompts];
+  }
+} catch(e) {}
+
+let nextId = prompts.length + 1;
+let currentCat = 'all';
+
+// ====== 渲染 ======
+function render() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  let filtered = prompts;
+  if (currentCat !== 'all') filtered = filtered.filter(p => p.cat === currentCat);
+  if (q) filtered = filtered.filter(p => 
+    p.title.toLowerCase().includes(q) || 
+    p.desc.toLowerCase().includes(q) || 
+    p.prompt.toLowerCase().includes(q)
+  );
+
+  const grid = document.getElementById('promptGrid');
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="text-align:center;padding:3rem;color:#94a3b8;">没有找到匹配的提示词 😅</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="card">
+      <div class="tag">${p.cat === 'writing' ? '✍️ 写作' : p.cat === 'business' ? '💼 商业' : p.cat === 'study' ? '📚 学习' : p.cat === 'code' ? '💻 编程' : p.cat === 'creative' ? '🎨 创意' : '🚀 高阶'}</div>
+      <h3>${p.title}</h3>
+      <div class="desc">${p.desc}</div>
+      <div class="preview">${escapeHtml(p.prompt.substring(0, 120))}${p.prompt.length > 120 ? '...' : ''}</div>
+      <div class="votes">
+        <span class="up" onclick="upvote(${p.id})">👍</span>
+        <span id="v${p.id}">${p.votes}</span>
+        <span style="margin-left:auto;font-size:0.8rem;">${p.author || '匿名'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ====== 筛选 ======
+document.getElementById('filters').addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  document.querySelectorAll('#filters button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat = btn.dataset.cat;
+  render();
+});
+
+// ====== 点赞 ======
+function upvote(id) {
+  const p = prompts.find(x => x.id === id);
+  if (p) { p.votes++; render(); }
+}
+
+// ====== 模态框 ======
+function openModal() { document.getElementById('modal').classList.add('active'); }
+function closeModal() { document.getElementById('modal').classList.remove('active'); }
+document.getElementById('modal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeModal();
+});
+
+// ====== 提交 ======
+function submitPrompt() {
+  const cat = document.getElementById('mCat').value;
+  const catMap = { '写作': 'writing', '商业': 'business', '学习': 'study', '编程': 'code', '创意': 'creative', '高阶': 'advanced' };
+  const title = document.getElementById('mTitle').value.trim();
+  const desc = document.getElementById('mDesc').value.trim();
+  const prompt = document.getElementById('mPrompt').value.trim();
+  const author = document.getElementById('mAuthor').value.trim() || '匿名用户';
+
+  if (!title || !desc || !prompt) { alert('请填写标题、描述和提示词内容'); return; }
+
+  const newPrompt = {
+    id: nextId++,
+    cat: catMap[cat] || 'writing',
+    title, desc, prompt, author,
+    votes: 0
+  };
+
+  prompts.push(newPrompt);
+  
+  // Save to localStorage
+  try {
+    const toSave = prompts.filter(p => p.id >= nextId - 1); // save user-submitted ones
+    localStorage.setItem('prompts_data', JSON.stringify(toSave));
+  } catch(e) {}
+
+  closeModal();
+  document.getElementById('mTitle').value = '';
+  document.getElementById('mDesc').value = '';
+  document.getElementById('mPrompt').value = '';
+  document.getElementById('mAuthor').value = '';
+  document.getElementById('totalPrompts').textContent = prompts.length + '+';
+  render();
+}
+
+// ====== 初始化 ======
+document.getElementById('totalPrompts').textContent = prompts.length + '+';
+render();
+</script>
+</body>
+</html>
