@@ -3,313 +3,390 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PromptHub - AI 提示词库</title>
-<meta name="description" content="精选 ChatGPT / Claude / DeepSeek 提示词模板，分类浏览，社区投稿，持续更新。">
+<title>PromptHub · 精选 AI 提示词库</title>
+<meta name="description" content="精选 ChatGPT、Claude、DeepSeek 提示词模板。双语、分类、社区驱动。中英文高质量提示词，让 AI 输出提升 10 倍。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <style>
-:root{--bg:#f5f6f8;--card:#fff;--primary:#5b5bd6;--primary-light:#eef2ff;--text:#1a1a2e;--text2:#6b7280;--border:#e5e7eb;--gold:#f59e0b;--radius:12px}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,'Inter','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
-.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.topbar h1{font-size:1.1rem;font-weight:700;color:var(--primary)}
-.topbar h1 span{font-weight:400;color:var(--text2);font-size:0.85rem}
-.topbar .stats{font-size:0.8rem;color:var(--text2);display:flex;gap:1rem}
-.topbar .stats strong{color:var(--text)}
-.hero{background:linear-gradient(135deg,#5b5bd6,#8b5cf6);color:#fff;padding:3rem 1.5rem;text-align:center}
-.hero h2{font-size:1.8rem;font-weight:700;margin-bottom:0.3rem}
-.hero p{opacity:0.85;font-size:0.95rem;max-width:500px;margin:0 auto}
-.container{max-width:1200px;margin:0 auto;padding:1rem 1.5rem;display:flex;gap:1.5rem}
-.sidebar{width:180px;flex-shrink:0}
-.sidebar h3{font-size:0.8rem;text-transform:uppercase;color:var(--text2);letter-spacing:0.05em;margin-bottom:0.8rem;font-weight:600}
-.sidebar .cat-list{display:flex;flex-direction:column;gap:0.25rem}
-.sidebar .cat-list button{background:none;border:none;text-align:left;padding:0.5rem 0.8rem;border-radius:8px;font-size:0.85rem;cursor:pointer;color:var(--text2);transition:all 0.15s;font-family:inherit;font-weight:500}
-.sidebar .cat-list button:hover{background:var(--primary-light);color:var(--primary)}
-.sidebar .cat-list button.active{background:var(--primary);color:#fff}
-.sidebar .cat-list button .count{float:right;font-size:0.75rem;opacity:0.6}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f5f7;--card:#fff;--primary:#5558e0;--primary-dark:#4345c0;
+  --primary-light:#eeeffa;--primary-bg:rgba(85,88,224,0.06);
+  --text:#171923;--text2:#5a6170;--text3:#8b92a0;
+  --border:#e2e5ea;--border2:#d0d4dd;
+  --radius:10px;--radius-lg:16px;
+  --shadow:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.03);
+  --shadow-hover:0 6px 20px rgba(0,0,0,0.06),0 2px 6px rgba(0,0,0,0.04);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none}
+
+/* Layout */
+.nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-brand{display:flex;align-items:center;gap:0.5rem;font-weight:700;font-size:1rem;color:var(--primary)}
+.nav-brand span{color:var(--text2);font-weight:400;font-size:0.85rem}
+.nav-stats{display:flex;gap:1.2rem;font-size:0.8rem;color:var(--text3)}
+.nav-stats strong{color:var(--text);font-weight:600}
+
+.hero{background:linear-gradient(135deg,#5558e0 0%,#7c5ce0 50%,#a855f7 100%);color:#fff;padding:3.5rem 1.5rem 3rem;text-align:center}
+.hero h1{font-size:2rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.4rem}
+.hero p{font-size:0.95rem;opacity:0.88;max-width:560px;margin:0 auto;line-height:1.7}
+
+.container{max-width:1240px;margin:0 auto;padding:1.25rem 1.5rem;display:flex;gap:1.5rem}
+.sidebar{width:184px;flex-shrink:0}
+.sidebar-sticky{position:sticky;top:72px}
+.sidebar h3{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);font-weight:600;margin-bottom:0.6rem}
+.cat-list{display:flex;flex-direction:column;gap:2px}
+.cat-btn{background:none;border:none;display:flex;align-items:center;width:100%;padding:0.5rem 0.75rem;border-radius:8px;font-size:0.85rem;cursor:pointer;color:var(--text2);transition:all .12s;font-family:inherit;font-weight:500;text-align:left;gap:0.4rem}
+.cat-btn:hover{background:var(--primary-bg);color:var(--primary)}
+.cat-btn.active{background:var(--primary);color:#fff;font-weight:600}
+.cat-btn .count{font-size:0.7rem;opacity:.55;margin-left:auto;font-weight:400}
+.sidebar-actions{margin-top:1rem;display:flex;flex-direction:column;gap:6px}
+.sidebar-actions button{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.55rem;font-size:0.82rem;cursor:pointer;color:var(--text2);transition:all .12s;font-family:inherit;font-weight:500}
+.sidebar-actions button:hover{border-color:var(--primary);color:var(--primary)}
+.sidebar-actions .btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sidebar-actions .btn-primary:hover{background:var(--primary-dark);color:#fff}
+
 .main{flex:1;min-width:0}
-.search-row{display:flex;gap:0.5rem;margin-bottom:1rem}
-.search-row input{flex:1;padding:0.65rem 1rem;border:1px solid var(--border);border-radius:10px;font-size:0.9rem;outline:none;font-family:inherit;background:#fff;transition:border 0.2s}
-.search-row input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(91,91,214,0.08)}
-.search-row .count-badge{display:inline-flex;align-items:center;padding:0 0.8rem;background:var(--primary-light);color:var(--primary);border-radius:10px;font-size:0.8rem;font-weight:600;white-space:nowrap}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:0.8rem}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;transition:all 0.2s}
-.card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.06);border-color:#d1d5db}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.4rem}
-.card-cat{display:inline-block;padding:0.15rem 0.6rem;border-radius:6px;font-size:0.72rem;font-weight:600;background:var(--primary-light);color:var(--primary)}
-.card-author{font-size:0.75rem;color:var(--text2)}
-.card h3{font-size:0.95rem;font-weight:600;margin-bottom:0.25rem}
-.card .desc{font-size:0.82rem;color:var(--text2);margin-bottom:0.6rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card .prompt-preview{background:#f9fafb;border-radius:8px;padding:0.7rem;font-size:0.75rem;color:#374151;font-family:'SF Mono','Consolas',monospace;white-space:pre-wrap;max-height:80px;overflow:hidden;position:relative;line-height:1.5}
-.card .prompt-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,#f9fafb)}
-.card-footer{display:flex;align-items:center;gap:0.5rem;margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid #f3f4f6;font-size:0.78rem;color:var(--text2)}
-.card-footer .vote-btn{background:none;border:none;cursor:pointer;font-size:1rem;padding:0 0.2rem;transition:transform 0.15s;line-height:1}
-.card-footer .vote-btn:hover{transform:scale(1.2)}
-.card-footer .vote-btn.voted{color:var(--primary)}
-.card-footer .date{font-size:0.72rem;color:#9ca3af;margin-left:auto}
-.action-bar{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap}
-.action-bar button{background:#fff;border:1px solid var(--border);padding:0.5rem 1.2rem;border-radius:8px;font-size:0.82rem;cursor:pointer;color:var(--text2);transition:all 0.15s;font-family:inherit;font-weight:500}
-.action-bar button:hover{border-color:var(--primary);color:var(--primary)}
-.action-bar button.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
-.action-bar button.primary:hover{background:#4a4ac4}
-.donate-card{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fde68a;border-radius:var(--radius);padding:1.5rem;text-align:center;margin-bottom:1rem}
-.donate-card h3{font-size:1rem;margin-bottom:0.3rem;color:#92400e}
-.donate-card p{font-size:0.82rem;color:#a16207;margin-bottom:0.8rem}
-.donate-card img{width:150px;height:150px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);display:block;margin:0 auto}
-.donate-card .hint{font-size:0.75rem;color:#a16207;margin-top:0.5rem}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:100;justify-content:center;align-items:center;padding:1rem}
-.modal-overlay.active{display:flex}
-.modal{background:#fff;border-radius:16px;padding:1.5rem;max-width:540px;width:100%;max-height:90vh;overflow-y:auto}
-.modal h2{font-size:1.1rem;margin-bottom:1rem}
-.modal label{display:block;font-size:0.82rem;font-weight:600;margin-top:0.8rem;margin-bottom:0.25rem;color:var(--text2)}
-.modal input,.modal select,.modal textarea{width:100%;padding:0.55rem 0.7rem;border:1px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;transition:border 0.2s}
-.modal input:focus,.modal select:focus,.modal textarea:focus{border-color:var(--primary);outline:none}
-.modal textarea{min-height:100px;resize:vertical;font-family:'SF Mono',Consolas,monospace;font-size:0.82rem}
-.modal .btn-row{display:flex;gap:0.5rem;margin-top:1.2rem;justify-content:flex-end}
-.modal .btn-row button{padding:0.55rem 1.3rem;border-radius:8px;border:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:0.85rem}
-.modal .btn-row .cancel{background:#f3f4f6;color:var(--text2)}
-.modal .btn-row .submit{background:var(--primary);color:#fff}
-footer{background:#fff;border-top:1px solid var(--border);padding:1.5rem;text-align:center;font-size:0.8rem;color:var(--text2);margin-top:2rem}
-footer a{color:var(--primary);text-decoration:none}
-@media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%}.sidebar .cat-list{flex-direction:row;flex-wrap:wrap}.sidebar .cat-list button{flex:1;min-width:80px;text-align:center;padding:0.4rem 0.6rem;font-size:0.78rem}.grid{grid-template-columns:1fr}.hero h2{font-size:1.4rem}}
+.toolbar{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.search-wrap{flex:1;min-width:180px;position:relative}
+.search-wrap input{width:100%;padding:0.6rem 0.9rem 0.6rem 2.2rem;border:1px solid var(--border);border-radius:10px;font-size:0.88rem;outline:none;font-family:inherit;background:var(--card);transition:border .15s}
+.search-wrap input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(85,88,224,0.08)}
+.search-wrap .icon{position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:0.9rem;pointer-events:none}
+.sort-btn{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.9rem;font-size:0.82rem;cursor:pointer;color:var(--text2);transition:all .12s;font-family:inherit;white-space:nowrap}
+.sort-btn:hover{border-color:var(--primary);color:var(--primary)}
+.sort-btn.active{background:var(--primary-bg);border-color:var(--primary);color:var(--primary)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:0.75rem;margin-bottom:2rem}
+
+/* Card */
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem;transition:all .2s;cursor:pointer}
+.pcard:hover{box-shadow:var(--shadow-hover);border-color:var(--border2);transform:translateY(-1px)}
+.pcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.35rem}
+.pcard-cat{padding:0.18rem 0.55rem;border-radius:6px;font-size:0.7rem;font-weight:600;background:var(--primary-light);color:var(--primary);letter-spacing:.01em}
+.pcard-author{font-size:0.72rem;color:var(--text3)}
+.pcard-title{font-size:0.92rem;font-weight:600;margin-bottom:0.2rem;line-height:1.4}
+.pcard-desc{font-size:0.8rem;color:var(--text2);margin-bottom:0.65rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard-preview{background:#f8f9fb;border-radius:8px;padding:0.65rem 0.75rem;font-size:0.72rem;color:#374151;font-family:'SF Mono','Consolas','Menlo',monospace;white-space:pre-wrap;max-height:72px;overflow:hidden;position:relative;line-height:1.5}
+.pcard-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,#f8f9fb)}
+.pcard-footer{display:flex;align-items:center;gap:0.6rem;margin-top:0.65rem;padding-top:0.55rem;border-top:1px solid #f1f2f5;font-size:0.75rem;color:var(--text3)}
+.vote-btn{background:none;border:none;cursor:pointer;font-size:0.95rem;padding:0;transition:transform .1s;line-height:1;color:var(--text3)}
+.vote-btn:hover{transform:scale(1.2);color:var(--primary)}
+.vote-btn.voted{color:var(--primary)}
+.copy-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:0.15rem 0.5rem;font-size:0.7rem;cursor:pointer;color:var(--text3);transition:all .12s;font-family:inherit;margin-left:auto}
+.copy-btn:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+.lang-badge{font-size:0.65rem;padding:0.1rem 0.4rem;border-radius:4px;background:#e8eaf0;color:var(--text3)}
+.date-badge{font-size:0.7rem;color:#a0a7b4}
+
+/* Detail modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;padding:1rem;overflow-y:auto}
+.modal-overlay.active{display:block}
+.modal-wrap{max-width:760px;margin:2rem auto;background:var(--card);border-radius:var(--radius-lg);padding:2rem;position:relative}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text3);width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.modal-close:hover{background:#f1f2f5}
+.modal-cat{display:inline-block;padding:0.2rem 0.65rem;border-radius:6px;font-size:0.75rem;font-weight:600;background:var(--primary-light);color:var(--primary);margin-bottom:0.5rem}
+.modal-title{font-size:1.3rem;font-weight:700;margin-bottom:0.4rem}
+.modal-desc{color:var(--text2);font-size:0.9rem;margin-bottom:1rem}
+.modal-langs{display:flex;gap:1rem;margin-bottom:1rem}
+.lang-tab{background:none;border:none;padding:0.4rem 0;font-size:0.82rem;cursor:pointer;color:var(--text3);font-weight:500;font-family:inherit;border-bottom:2px solid transparent;transition:all .12s}
+.lang-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+.modal-prompt{background:#f8f9fb;border-radius:10px;padding:1rem;font-size:0.82rem;color:#374151;font-family:'SF Mono','Consolas','Menlo',monospace;white-space:pre-wrap;line-height:1.6;max-height:400px;overflow-y:auto}
+.modal-footer{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:0.8rem;border-top:1px solid #f1f2f5}
+.modal-votes{display:flex;align-items:center;gap:0.4rem;font-size:0.88rem;color:var(--text2)}
+
+/* Donate */
+.donate{background:linear-gradient(135deg,#fefce8,#fef9c3);border:1px solid #fde68a;border-radius:var(--radius-lg);padding:1.5rem;text-align:center;margin-bottom:1rem}
+.donate h3{font-size:1rem;color:#92400e;margin-bottom:0.2rem}
+.donate p{font-size:0.8rem;color:#a16207;margin-bottom:0.8rem}
+.donate img{width:140px;height:140px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:block;margin:0 auto}
+.donate .hint{font-size:0.72rem;color:#a16207;margin-top:0.4rem}
+
+/* Empty state */
+.empty{padding:3rem;text-align:center;color:var(--text3);font-size:0.9rem}
+
+footer{padding:1.5rem;text-align:center;font-size:0.78rem;color:var(--text3);border-top:1px solid var(--border);background:var(--card)}
+footer a{color:var(--primary)}
+
+@media(max-width:900px){
+  .container{flex-direction:column}
+  .sidebar{width:100%}
+  .cat-list{flex-direction:row;flex-wrap:wrap;gap:4px}
+  .cat-btn{flex:1;min-width:80px;justify-content:center;padding:0.4rem 0.5rem;font-size:0.78rem}
+  .grid{grid-template-columns:1fr}
+  .hero h1{font-size:1.5rem}
+}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <h1>PromptHub <span>| AI 提示词库</span></h1>
-  <div class="stats">
-    <span><strong id="totalCount">0</strong> 提示词</span>
-    <span><strong>6</strong> 分类</span>
-  </div>
+<div class="nav">
+  <div class="nav-brand">✦ PromptHub <span>| AI 提示词库</span></div>
+  <div class="nav-stats"><span><strong id="totalPrompts">0</strong> 提示词</span><span><strong>6</strong> 分类</span></div>
 </div>
 
 <div class="hero">
-  <h2>🔮 精选 AI 提示词</h2>
-  <p>让 ChatGPT / Claude / DeepSeek 输出质量提升 10 倍 · 社区持续更新</p>
+  <h1>🔮 让 AI 输出质量提升 10 倍</h1>
+  <p>精选自全球顶级提示词库 · 中英双语 · 社区持续更新<br>覆盖写作、编程、商业、学习、创意、高阶六大场景</p>
 </div>
 
 <div class="container">
   <div class="sidebar">
-    <h3>分类</h3>
-    <div class="cat-list" id="catList">
-      <button class="active" data-cat="all">全部</button>
-    </div>
-    <div style="margin-top:1rem">
-      <h3>操作</h3>
-      <div style="display:flex;flex-direction:column;gap:0.3rem">
-        <button onclick="openModal()" style="background:var(--primary);color:#fff;border:none;padding:0.55rem;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;font-size:0.82rem">✏️ 投稿</button>
+    <div class="sidebar-sticky">
+      <h3>📂 分类</h3>
+      <div class="cat-list" id="catList"></div>
+      <div class="sidebar-actions">
+        <button class="btn-primary" onclick="openSubmit()">✏️ 投稿</button>
+        <button onclick="document.getElementById('donateCard').scrollIntoView({behavior:'smooth'})">☕ 赞赏</button>
       </div>
     </div>
   </div>
 
   <div class="main">
-    <div class="donate-card" id="donateCard">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="icon">🔍</span>
+        <input type="text" id="search" placeholder="搜索提示词..." oninput="render()">
+      </div>
+      <button class="sort-btn" id="sortVotes" onclick="setSort('votes')">📊 热门</button>
+      <button class="sort-btn" id="sortNew" onclick="setSort('new')">🕐 最新</button>
+    </div>
+
+    <div id="donateCard" class="donate">
       <h3>☕ 赞赏支持</h3>
       <p>如果这些提示词帮到了你，可以请我喝杯咖啡 ❤️</p>
-      <img src="donate.jpg" alt="赞赏码">
-      <div class="hint">扫码随意赞赏 · 感谢支持</div>
+      <img src="donate.jpg" alt="赞赏码" loading="lazy">
+      <div class="hint">扫码随意赞赏 · 感谢每一份支持</div>
     </div>
 
-    <div class="search-row">
-      <input type="text" id="searchInput" placeholder="搜索提示词..." oninput="render()">
-      <div class="count-badge" id="resultCount">0 个</div>
-    </div>
-
-    <div class="action-bar">
-      <button class="primary" onclick="openModal()">✏️ 投稿提示词</button>
-      <button onclick="sortByVotes()">📊 按热度</button>
-      <button onclick="sortByDate()">🕐 按最新</button>
-    </div>
-
-    <div class="grid" id="promptGrid"></div>
+    <div class="grid" id="grid"></div>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <h2>📝 投稿提示词</h2>
-    <label>分类</label>
-    <select id="mCat">
-      <option value="写作">写作</option>
-      <option value="编程">编程</option>
-      <option value="商业">商业</option>
-      <option value="学习">学习</option>
-      <option value="创意">创意</option>
-      <option value="高阶">高阶</option>
+<!-- Detail Modal -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-wrap">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-cat" id="mCat"></div>
+    <div class="modal-title" id="mTitle"></div>
+    <div class="modal-desc" id="mDesc"></div>
+    <div class="modal-langs">
+      <button class="lang-tab active" onclick="switchLang('zh')">🇨🇳 中文</button>
+      <button class="lang-tab" onclick="switchLang('en')">🇺🇸 English</button>
+    </div>
+    <div class="modal-prompt" id="mPrompt"></div>
+    <div class="modal-footer">
+      <div class="modal-votes">❤️ <span id="mVotes">0</span></div>
+      <button class="copy-btn" onclick="copyPrompt()" style="font-size:0.82rem;padding:0.35rem 0.8rem">📋 复制提示词</button>
+    </div>
+  </div>
+</div>
+
+<!-- Submit Modal -->
+<div class="modal-overlay" id="submitModal" onclick="if(event.target===this)closeSubmit()">
+  <div class="modal-wrap" style="max-width:540px">
+    <button class="modal-close" onclick="closeSubmit()">✕</button>
+    <h2 style="font-size:1.1rem;margin-bottom:1rem">📝 投稿提示词</h2>
+    <label style="display:block;font-size:0.8rem;font-weight:600;margin-bottom:0.2rem;color:var(--text3)">分类</label>
+    <select id="sCat" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border);border-radius:8px;font-size:0.85rem;font-family:inherit;margin-bottom:0.6rem">
+      <option value="writing">写作</option><option value="code">编程</option><option value="business">商业</option><option value="study">学习</option><option value="creative">创意</option><option value="advanced">高阶</option>
     </select>
-    <label>标题</label>
-    <input id="mTitle" placeholder="例如：小红书爆款文案生成器">
-    <label>简短描述</label>
-    <input id="mDesc" placeholder="一句话说明用途">
-    <label>提示词内容</label>
-    <textarea id="mPrompt" placeholder="粘贴完整的提示词模板..." rows="4"></textarea>
-    <label>你的昵称（可选）</label>
-    <input id="mAuthor" placeholder="匿名">
-    <div class="btn-row">
-      <button class="cancel" onclick="closeModal()">取消</button>
-      <button class="submit" onclick="submitPrompt()">提交</button>
+    <label style="display:block;font-size:0.8rem;font-weight:600;margin-bottom:0.2rem;color:var(--text3)">标题</label>
+    <input id="sTitle" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border);border-radius:8px;font-size:0.85rem;font-family:inherit;margin-bottom:0.6rem" placeholder="例如：小红书爆款文案生成器">
+    <label style="display:block;font-size:0.8rem;font-weight:600;margin-bottom:0.2rem;color:var(--text3)">简短描述</label>
+    <input id="sDesc" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border);border-radius:8px;font-size:0.85rem;font-family:inherit;margin-bottom:0.6rem" placeholder="一句话说明用途">
+    <label style="display:block;font-size:0.8rem;font-weight:600;margin-bottom:0.2rem;color:var(--text3)">中文提示词</label>
+    <textarea id="sZH" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;font-family:monospace;min-height:80px;margin-bottom:0.6rem;resize:vertical" placeholder="中文版提示词..."></textarea>
+    <label style="display:block;font-size:0.8rem;font-weight:600;margin-bottom:0.2rem;color:var(--text3)">English Version</label>
+    <textarea id="sEN" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;font-family:monospace;min-height:80px;margin-bottom:0.6rem;resize:vertical" placeholder="English version..."></textarea>
+    <label style="display:block;font-size:0.8rem;font-weight:600;margin-bottom:0.2rem;color:var(--text3)">昵称（可选）</label>
+    <input id="sAuthor" style="width:100%;padding:0.5rem 0.7rem;border:1px solid var(--border);border-radius:8px;font-size:0.85rem;font-family:inherit;margin-bottom:1rem" placeholder="匿名">
+    <div style="display:flex;gap:0.5rem;justify-content:flex-end">
+      <button onclick="closeSubmit()" style="padding:0.5rem 1.2rem;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-family:inherit;font-size:0.85rem">取消</button>
+      <button onclick="submitPrompt()" style="padding:0.5rem 1.2rem;border-radius:8px;border:none;background:var(--primary);color:#fff;cursor:pointer;font-family:inherit;font-weight:600;font-size:0.85rem">提交</button>
     </div>
   </div>
 </div>
 
 <footer>
-  <p>PromptHub · AI 提示词库 · <a href="#" onclick="openModal();return false">投稿</a></p>
-  <p style="margin-top:0.3rem">收录高质量提示词，让 AI 更高效</p>
+  <p>PromptHub · 精选 AI 提示词库 · <a href="https://github.com/yuanweibi-bot/prompt-hub" target="_blank">GitHub</a></p>
+  <p style="margin-top:0.2rem">让 AI 对话更高效 · 收录高质量中英文提示词</p>
 </footer>
 
 <script>
-const CAT_MAP = {
-  '写作':'writing','编程':'code','商业':'business','学习':'study','创意':'creative','高阶':'advanced'
-};
-const CAT_LABEL = {
-  'writing':'📝 写作','code':'💻 编程','business':'💼 商业','study':'📚 学习','creative':'🎨 创意','advanced':'🚀 高阶'
-};
-const CAT_ORDER = ['writing','code','business','study','creative','advanced'];
+const CATS = ['writing','code','business','study','creative','advanced'];
+const CAT_LABEL = {writing:'📝 写作',code:'💻 编程',business:'💼 商业',study:'📚 学习',creative:'🎨 创意',advanced:'🚀 高阶'};
 
-let prompts = [
-  {id:1,cat:'writing',title:'优化句子语法与可读性',desc:'优化句子语法、清晰度和简洁度，提高可读性',prompt:'As a writing improvement assistant, your task is to improve the spelling, grammar, clarity, concision, and overall readability of the text provided, while breaking down long sentences, reducing repetition, and providing suggestions for improvement. Please provide only the corrected Chinese version and avoid explanations.\n\n[文章内容]',author:'PromptHub',votes:35,date:'2026-05'},
-  {id:2,cat:'writing',title:'小红书 Emoji 风格改写',desc:'将文本改写为小红书风格的 Emoji 文案',prompt:'Please edit the following passage using the Emoji style, which is characterized by captivating headlines, the inclusion of emoticons in each paragraph, and the addition of relevant tags at the end. Be sure to maintain the original meaning of the text.\n\n[待改写文本]',author:'PromptHub',votes:28,date:'2026-05'},
-  {id:3,cat:'writing',title:'英文邮件写作',desc:'正式/半正式英文邮件模板，含主题行',prompt:'Write a professional email in English.\nPurpose: [目的]\nTone: [formal/semi-formal]\nKey points:\n1. [要点]\n2. [要点]\n3. [要点]\n\nInclude subject line, proper salutation and closing.',author:'PromptHub',votes:22,date:'2026-05'},
-  {id:4,cat:'writing',title:'简历优化',desc:'让简历更专业、成果量化、一页浓缩',prompt:'请帮我优化以下简历/自我介绍，使其更专业、更有吸引力。\n目标岗位：[待填写]\n行业：[待填写]\n要求：保持关键信息，用数据和成果说话，使用行业关键词，控制在一页内。\n\n原文：[粘贴简历]',author:'PromptHub',votes:31,date:'2026-05'},
-  {id:5,cat:'writing',title:'公众号文章大纲',desc:'含标题选项、正文结构、配图建议',prompt:'请写一篇公众号文章的大纲。\n主题：[待填写]\n目标读者：[待填写]\n输出：标题5选、引言、正文3-4板块（每板块2-3关键点）、结语、配图位置。',author:'PromptHub',votes:18,date:'2026-05'},
-  {id:6,cat:'business',title:'产品核心卖点提炼',desc:'从功能列表提炼 USP 和价值主张',prompt:'请为以下产品提炼核心卖点（USP）。\n产品：[待填]\n主要功能：1. 2. 3.\n目标客户：[待填]\n输出：3个核心卖点 + 一句话价值主张 + 针对三类客户的卖点表达。',author:'PromptHub',votes:24,date:'2026-05'},
-  {id:7,cat:'business',title:'竞品对比分析',desc:'多维度表格对比+差异化定位建议',prompt:'请对以下竞品进行对比分析。\n我的产品：[名称和特点]\n竞品A：[名称]\n竞品B：[名称]\n分析维度：价格、核心功能、目标用户、优劣势。用表格输出，附差异化建议。',author:'PromptHub',votes:16,date:'2026-05'},
-  {id:8,cat:'business',title:'销售问答脚本',desc:'客户常见问题的专业回答',prompt:'我是[业务类型]的销售人员。\n客户问题：\nQ1: [问题]\nQ2: [问题]\nQ3: [问题]\n要求：每个回答不超过100字，突出价值，结尾引导下一步。',author:'PromptHub',votes:13,date:'2026-05'},
-  {id:9,cat:'study',title:'读书笔记生成器',desc:'结构化输出：核心观点+概念+行动项',prompt:'请为以下书籍生成结构化读书笔记。\n书名：[待填]\n作者：[待填]\n输出格式：核心观点（3句话）| 关键概念定义 | 实操建议清单 | 我的行动项。',author:'PromptHub',votes:27,date:'2026-05'},
-  {id:10,cat:'study',title:'会议纪要整理',desc:'录音/笔记转专业纪要含行动项',prompt:'请将以下会议内容整理为专业会议纪要。\n输出：会议主题、时间、参会人、核心结论、行动项（责任人+截止日期）、待跟进事项。',author:'PromptHub',votes:19,date:'2026-05'},
-  {id:11,cat:'study',title:'学习计划制定',desc:'分阶段路线图+每周安排+资源推荐',prompt:'请制定 [时间段] 学习计划。\n目标：[待填]\n当前水平：零基础/初级/中级\n每天可用：[X]小时\n输出：分阶段路线图、每周安排、推荐资源、里程碑和自测方法。',author:'PromptHub',votes:15,date:'2026-05'},
-  {id:12,cat:'code',title:'代码逐行解释',desc:'解释代码功能、算法和潜在问题',prompt:'请逐行解释以下代码的功能和逻辑。\n语言：[语言]\n代码：[粘贴]\n要求：解释每行作用，指出关键算法/设计模式，标注潜在问题。',author:'PromptHub',votes:33,date:'2026-05'},
-  {id:13,cat:'code',title:'错误调试助手',desc:'分析错误信息并给出修复方案',prompt:'代码出现以下错误。\n语言：[语言]\n错误信息：[粘贴]\n代码片段：[粘贴]\n我已尝试：[方法]\n请分析可能原因并给出解决方案。',author:'PromptHub',votes:29,date:'2026-05'},
-  {id:14,cat:'code',title:'API 文档自动生成',desc:'JSDoc/文档字符串格式输出',prompt:'请为以下函数生成API文档。\n函数名：[待填]\n参数：[列表]\n功能：一句话描述\n输出JSDoc格式：函数描述、参数说明（类型/必填/默认）、返回值、使用示例、异常。',author:'PromptHub',votes:14,date:'2026-05'},
-  {id:15,cat:'code',title:'SQL 查询优化',desc:'慢查询分析和索引建议',prompt:'请分析以下SQL查询并给出优化建议。\n原始查询：[粘贴SQL]\n表结构：[粘贴建表语句]\n数据量：[行数]\n输出：执行计划分析、索引建议、改写后的优化查询。',author:'PromptHub',votes:20,date:'2026-05'},
-  {id:16,cat:'creative',title:'短视频脚本',desc:'抖音/小红书/B站 脚本文案含节奏设计',prompt:'请写一个[时长]的短视频脚本。\n主题：[待填]\n平台：[抖音/小红书/B站]\n风格：[幽默/知识/情感]\n目标：[涨粉/带货/曝光]\n输出：开头3秒 | 正文节奏 | 结尾引导 | 字幕提示',author:'PromptHub',votes:21,date:'2026-05'},
-  {id:17,cat:'creative',title:'商业命名生成器',desc:'中文名5个+英文名5个，附含义解释',prompt:'请为以下项目取10个名字。\n项目描述：[待填]\n行业：[待填]\n品牌调性：[高端/亲民/科技感]\n输出：中文名5个+英文名5个，每个附带含义解释，优先易记易搜索。',author:'PromptHub',votes:13,date:'2026-05'},
-  {id:18,cat:'creative',title:'故事/小说大纲',desc:'角色设定+情节结构+冲突设计',prompt:'请写一篇[类型]小说的故事大纲。\n类型：[奇幻/科幻/言情/悬疑]\n核心设定：[一句话世界观]\n主要角色：[角色名和性格]\n输出：角色设定、三幕结构、关键冲突、结局走向。',author:'PromptHub',votes:17,date:'2026-05'},
-  {id:19,cat:'advanced',title:'角色扮演设定',desc:'设定 AI 角色背景、专业和沟通风格',prompt:'从现在开始，你是一名[角色]。\n专业领域：[领域]\n经验：[X]年\n沟通风格：[直接/耐心/幽默]\n请以这个角色回答我的第一个问题：[问题]',author:'PromptHub',votes:25,date:'2026-05'},
-  {id:20,cat:'advanced',title:'思维链推理',desc:'复杂问题逐步分析+推演+结论',prompt:'请一步步思考并回答以下问题。\n问题：[复杂问题]\n步骤：\n1. 分析问题核心\n2. 列出需要的信息\n3. 逐步推理\n4. 给出结论\n5. 指出不确定性',author:'PromptHub',votes:20,date:'2026-05'},
-  {id:21,cat:'advanced',title:'多轮对话优化',desc:'基于历史的连贯对话回复',prompt:'以下是我们的对话历史，请基于上下文继续。\n历史：\n用户：Q1\nAI：A1\n用户：Q2\n当前：\n要求：保持连贯，引用之前信息，不重复说过的话。',author:'PromptHub',votes:17,date:'2026-05'},
-  {id:22,cat:'advanced',title:'双语翻译润色',desc:'精准翻译+本地化润色，附对照',prompt:'Translate the following text from [源语言] to [目标语言]. After translation, polish the result to sound natural in the target language. Output a side-by-side comparison.\n\n原文：[粘贴文本]',author:'PromptHub',votes:26,date:'2026-05'},
-  {id:23,cat:'writing',title:'SEO 文章撰写',desc:'搜索引擎优化文章，含关键词布局',prompt:'请写一篇SEO优化的[主题]文章。\n目标关键词：[关键词]\n字数：800-1200字\n要求：H1/H2标题布局，首段含关键词，自然密度2-3%，内链建议，元描述。',author:'PromptHub',votes:12,date:'2026-05'},
-  {id:24,cat:'business',title:'商业计划书框架',desc:'投资级商业计划书完整提纲',prompt:'请写一份商业计划书框架。\n项目：[待填]\n输出：执行摘要、市场分析、产品/服务、商业模式、竞争分析、营销策略、团队、财务预测、融资需求、附录清单。',author:'PromptHub',votes:11,date:'2026-05'},
-  {id:25,cat:'creative',title:'Prompt 逆向工程',desc:'根据 AI 输出推断背后使用的提示词',prompt:'以下是一段AI输出内容，请逆向推断出背后使用的提示词。\n注意：推断的提示词应包含角色设定、任务描述、输出格式等要素。\n\nAI输出：[粘贴输出内容]',author:'PromptHub',votes:9,date:'2026-05'}
-];
-
-// Load user submissions from localStorage
-try {
-  const saved = JSON.parse(localStorage.getItem('ph_prompts'));
-  if (saved && saved.length) {
-    const existIds = new Set(prompts.map(p=>p.id));
-    prompts = [...prompts, ...saved.filter(p=>!existIds.has(p.id))];
-  }
-} catch(e){}
-
-let nextId = prompts.length + 1;
+let prompts = [];
 let currentCat = 'all';
-let sortMode = 'default';
+let sortMode = 'new';
+let currentPrompt = null;
+let currentLang = 'zh';
+
+// Load prompts
+async function init() {
+  try {
+    const r = await fetch('prompts.json');
+    prompts = await r.json();
+    // Load local submissions
+    const saved = localStorage.getItem('ph_prompts_v2');
+    if (saved) {
+      const sub = JSON.parse(saved);
+      if (sub.length) {
+        prompts = [...prompts, ...sub];
+      }
+    }
+  } catch(e) {
+    prompts = [];
+  }
+  buildCats();
+  render();
+}
+
+function buildCats() {
+  const counts = {};
+  prompts.forEach(p => { counts[p.cat] = (counts[p.cat] || 0) + 1; });
+  const list = document.getElementById('catList');
+  list.innerHTML = '<button class="cat-btn active" data-cat="all" onclick="setCat(\'all\')">🏠 全部 <span class="count">'+prompts.length+'</span></button>';
+  CATS.forEach(cat => {
+    list.innerHTML += '<button class="cat-btn" data-cat="'+cat+'" onclick="setCat(\''+cat+'\')">'+CAT_LABEL[cat]+' <span class="count">'+(counts[cat]||0)+'</span></button>';
+  });
+}
+
+function setCat(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  render();
+}
+
+function setSort(mode) {
+  sortMode = mode;
+  document.getElementById('sortVotes').classList.toggle('active', mode === 'votes');
+  document.getElementById('sortNew').classList.toggle('active', mode === 'new');
+  render();
+}
 
 function render() {
-  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const q = document.getElementById('search').value.toLowerCase().trim();
   let list = currentCat === 'all' ? [...prompts] : prompts.filter(p => p.cat === currentCat);
-  if (q) list = list.filter(p => p.title.includes(q) || p.desc.includes(q) || p.prompt.toLowerCase().includes(q));
+  if (q) list = list.filter(p => p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || (p.prompt_zh||'').toLowerCase().includes(q) || (p.prompt_en||'').toLowerCase().includes(q));
   
   if (sortMode === 'votes') list.sort((a,b) => b.votes - a.votes);
-  else if (sortMode === 'date') list.sort((a,b) => b.date.localeCompare(a.date));
+  else list.sort((a,b) => (b.id||0) - (a.id||0));
 
-  document.getElementById('resultCount').textContent = list.length + ' 个';
-  document.getElementById('totalCount').textContent = prompts.length;
+  document.getElementById('totalPrompts').textContent = prompts.length;
 
-  const grid = document.getElementById('promptGrid');
+  const grid = document.getElementById('grid');
   if (!list.length) {
-    grid.innerHTML = '<div style="text-align:center;padding:3rem;color:#9ca3af;font-size:0.9rem">没有找到匹配的提示词 😅</div>';
+    grid.innerHTML = '<div class="empty">没有找到匹配的提示词 😅<br><br><button onclick="openSubmit()" style="padding:0.5rem 1.2rem;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-family:inherit">投稿第一个 →</button></div>';
     return;
   }
 
-  grid.innerHTML = list.map(p => `
-    <div class="card" data-id="${p.id}">
-      <div class="card-header">
-        <span class="card-cat">${CAT_LABEL[p.cat] || p.cat}</span>
-        <span class="card-author">${p.author || '匿名'}</span>
+  grid.innerHTML = list.map(p => {
+    const preview = (p.prompt_zh || p.prompt_en || '').substring(0, 130);
+    return `<div class="pcard" onclick="openDetail(${p.id})">
+      <div class="pcard-top">
+        <span class="pcard-cat">${CAT_LABEL[p.cat]||p.cat}</span>
+        <span class="pcard-author">${p.author||'社区'}</span>
       </div>
-      <h3>${escapeHtml(p.title)}</h3>
-      <div class="desc">${escapeHtml(p.desc)}</div>
-      <div class="prompt-preview">${escapeHtml(p.prompt.substring(0, 150))}${p.prompt.length>150?'...':''}</div>
-      <div class="card-footer">
-        <button class="vote-btn" onclick="upvote(${p.id})">👍</button>
-        <span id="v${p.id}">${p.votes}</span>
-        <span class="date">${p.date || ''}</span>
+      <div class="pcard-title">${esc(p.title)}</div>
+      <div class="pcard-desc">${esc(p.desc||'')}</div>
+      <div class="pcard-preview">${esc(preview)}${(p.prompt_zh||p.prompt_en||'').length>130?'...':''}</div>
+      <div class="pcard-footer">
+        <button class="vote-btn" onclick="event.stopPropagation();upvote(${p.id})">👍</button>
+        <span>${p.votes||0}</span>
+        <span class="lang-badge">中/EN</span>
+        <span class="date-badge">${p.date||'2026-05'}</span>
+        <button class="copy-btn" onclick="event.stopPropagation();quickCopy(${p.id})">📋 复制</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
-function escapeHtml(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function esc(t){if(!t)return'';const d=document.createElement('div');d.textContent=t;return d.innerHTML}
 
 function upvote(id) {
   const p = prompts.find(x => x.id === id);
   if (p) { p.votes++; render(); }
 }
 
-function sortByVotes() { sortMode='votes'; render(); }
-function sortByDate() { sortMode='date'; render(); }
-
-// Category sidebar
-function buildCategories() {
-  const counts = {};
-  prompts.forEach(p => { counts[p.cat] = (counts[p.cat] || 0) + 1; });
-  const list = document.getElementById('catList');
-  list.innerHTML = '<button class="active" data-cat="all">全部 <span class="count">'+prompts.length+'</span></button>';
-  CAT_ORDER.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.dataset.cat = cat;
-    btn.innerHTML = (CAT_LABEL[cat] || cat) + ' <span class="count">'+(counts[cat]||0)+'</span>';
-    list.appendChild(btn);
-  });
+function openDetail(id) {
+  currentPrompt = prompts.find(p => p.id === id);
+  if (!currentPrompt) return;
+  currentLang = 'zh';
+  document.getElementById('mCat').textContent = CAT_LABEL[currentPrompt.cat] || currentPrompt.cat;
+  document.getElementById('mTitle').textContent = currentPrompt.title;
+  document.getElementById('mDesc').textContent = currentPrompt.desc;
+  document.getElementById('mPrompt').textContent = currentPrompt.prompt_zh || currentPrompt.prompt_en || '';
+  document.getElementById('mVotes').textContent = currentPrompt.votes || 0;
+  document.querySelectorAll('.lang-tab').forEach((t,i) => t.classList.toggle('active', i === 0));
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
-document.getElementById('catList').addEventListener('click', (e) => {
-  const btn = e.target.closest('button');
-  if (!btn) return;
-  document.querySelectorAll('#catList button').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentCat = btn.dataset.cat;
-  render();
-});
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
 
-// Modal
-function openModal() { document.getElementById('modal').classList.add('active'); }
-function closeModal() { document.getElementById('modal').classList.remove('active'); }
-document.getElementById('modal').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeModal(); });
+function switchLang(lang) {
+  if (!currentPrompt) return;
+  currentLang = lang;
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.lang-tab')[lang === 'zh' ? 0 : 1].classList.add('active');
+  document.getElementById('mPrompt').textContent = lang === 'zh' ? (currentPrompt.prompt_zh || currentPrompt.prompt_en) : (currentPrompt.prompt_en || currentPrompt.prompt_zh);
+}
+
+function quickCopy(id) {
+  const p = prompts.find(x => x.id === id);
+  if (!p) return;
+  const text = p.prompt_zh || p.prompt_en || '';
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✅';
+    setTimeout(() => btn.textContent = orig, 1000);
+  }).catch(() => {});
+}
+
+function copyPrompt() {
+  const text = document.getElementById('mPrompt').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.modal-footer .copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✅ 已复制';
+    setTimeout(() => btn.textContent = orig, 1200);
+  }).catch(() => {});
+}
+
+function openSubmit() { document.getElementById('submitModal').classList.add('active'); document.body.style.overflow='hidden'; }
+function closeSubmit() { document.getElementById('submitModal').classList.remove('active'); document.body.style.overflow=''; }
 
 function submitPrompt() {
-  const title = document.getElementById('mTitle').value.trim();
-  const desc = document.getElementById('mDesc').value.trim();
-  const prompt = document.getElementById('mPrompt').value.trim();
-  const author = document.getElementById('mAuthor').value.trim() || '社区用户';
-  const catLabel = document.getElementById('mCat').value;
-  const cat = CAT_MAP[catLabel] || 'writing';
-
-  if (!title || !desc || !prompt) { alert('请填写标题、描述和提示词内容'); return; }
+  const cat = document.getElementById('sCat').value;
+  const title = document.getElementById('sTitle').value.trim();
+  const desc = document.getElementById('sDesc').value.trim();
+  const zh = document.getElementById('sZH').value.trim();
+  const en = document.getElementById('sEN').value.trim();
+  const author = document.getElementById('sAuthor').value.trim() || '社区用户';
+  if (!title || !desc || (!zh && !en)) { alert('请填写标题、描述和至少一个语言的提示词'); return; }
 
   const now = new Date();
-  const dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
-  
-  const np = { id: nextId++, cat, title, desc, prompt, author, votes: 0, date: dateStr };
+  const dateStr = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const np = { id: Date.now(), cat, title, desc, prompt_zh: zh, prompt_en: en, author, votes: 0, date: dateStr };
   prompts.push(np);
-
+  
   try {
-    const saved = JSON.parse(localStorage.getItem('ph_prompts') || '[]');
+    const saved = JSON.parse(localStorage.getItem('ph_prompts_v2') || '[]');
     saved.push(np);
-    localStorage.setItem('ph_prompts', JSON.stringify(saved));
+    localStorage.setItem('ph_prompts_v2', JSON.stringify(saved));
   } catch(e) {}
-
-  closeModal();
-  ['mTitle','mDesc','mPrompt','mAuthor'].forEach(id => document.getElementById(id).value = '');
-  buildCategories();
+  
+  closeSubmit();
+  ['sCat','sTitle','sDesc','sZH','sEN','sAuthor'].forEach(id => document.getElementById(id).value = '');
+  buildCats();
   render();
 }
 
-// Init
-buildCategories();
-render();
+init();
 </script>
 </body>
 </html>
